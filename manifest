@@ -1,8 +1,8 @@
-#appname: Photo
-#publisher: Fulvio
-#url: http://
-#image: appicon.png
-#appid: com.photo
-#desc: undefined
-#type: ipad
-#guid: 94d5caea-1db4-439b-8450-c61e2d809aed
+#appname:Photo
+#publisher:Fulvio
+#url:http://
+#image:appicon.png
+#appid:com.photodueler.mobile
+#desc:not specified
+#type:ipad
+#guid:94d5caea-1db4-439b-8450-c61e2d809aed
