@@ -1,1 +1,0 @@
-/Users/Fulvio/Documents/Titanium_Studio_Workspace/PhotoRival/Resources/app.js
