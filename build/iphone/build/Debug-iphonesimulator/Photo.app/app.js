@@ -1,1 +1,1 @@
-/Users/Fulvio/Documents/Titanium_Studio_Workspace/Photo/Resources/app.js
+/Users/Fulvio/Documents/Titanium_Studio_Workspace/PhotoRival/Resources/app.js
