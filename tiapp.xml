@@ -14,7 +14,7 @@
         <target device="blackberry">false</target>
     </deployment-targets>
     <sdk-version>2.1.4.GA</sdk-version>
-    <id>com.photo</id>
+    <id>com.photodueler</id>
     <name>Photo</name>
     <version>1.0</version>
     <publisher>Fulvio</publisher>
