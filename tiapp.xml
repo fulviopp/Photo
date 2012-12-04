@@ -6,6 +6,8 @@
     <property name="acs-oauth-secret-development" type="string">wTHq1H1aVZpS69dOVMG49YSmv5kSjTvn</property>
     <property name="acs-oauth-key-development" type="string">tvUyLyTqDERujXIiA9oHrdITRFu4sFmu</property>
     <property name="acs-api-key-development" type="string">yosfXpqyBGyVJeob7BTooFTqNJnws9lt</property>
+    <property name="Ti.Facebook.appid">226354784164084</property>
+    <property name="ti.facebook.appid">226354784164084</property>
     <deployment-targets>
         <target device="mobileweb">false</target>
         <target device="iphone">true</target>

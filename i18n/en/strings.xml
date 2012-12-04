@@ -5,7 +5,14 @@
 	<string name="account">Conta</string>
 	<string name="ranking">Ranking</string>
 	<string name="more">Carregar anteriores</string>
-	<string name="newDuel">Novo Duelo</string>
+	<string name="new_duel">Novo Duelo</string>
 	<string name="openWindow">Open New Window</string>
-	<string name="back">Voltar</string>	
+	<string name="back">Voltar</string>
+	<string name="login_title">Login</string>
+	<string name="register">Cadastrando no PhotoDueler!</string>	
+	<string name="choose_theme">Escolha o tema</string>
+	<string name="get_photo">Escolher uma foto</string>
+	<string name="start_duel">Começar novo duelo!</string>
+	<string name="warning_choose_theme">Escolha o tema do duelo</string>
+	<string name="warning_choose_photo">Escolha uma foto</string>
 </resources>

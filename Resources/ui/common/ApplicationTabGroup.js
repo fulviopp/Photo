@@ -4,26 +4,25 @@ function ApplicationTabGroup(Window) {
 	
 	//create app tabs
 	var DuelWindow = require('ui/handheld/DuelWindow'),
-		win2 = new Window(L('ot_duel')),
 		win3 = new Window(L('account')),
 		win4 = new Window(L('ranking'));
 	
-	var duelWindow = new DuelWindow(L('DUELO'));
-	
+	var myDuelWindow = new DuelWindow(L('DUELO'),true);	
 	var tab1 = Ti.UI.createTab({
 		title: L('my_duel'),
 		icon: '/images/KS_nav_ui.png',
-		window: duelWindow
+		window: myDuelWindow
 	});
-	duelWindow.containingTab = tab1;
+	myDuelWindow.containingTab = tab1;
 	
+	var otDuelWindow = new DuelWindow(L('DUELO'),false);	
 	var tab2 = Ti.UI.createTab({
 		title: L('ot_duel'),
 		icon: '/images/KS_nav_ui.png',
-		window: win2
+		window: otDuelWindow
 	});
-	win2.containingTab = tab2;
-	
+	otDuelWindow.containingTab = tab2;	
+		
 	var tab3 = Ti.UI.createTab({
 		title: L('account'),
 		icon: '/images/KS_nav_ui.png',
