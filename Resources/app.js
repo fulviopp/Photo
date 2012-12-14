@@ -21,8 +21,6 @@ if (Ti.version < 1.8) {
 	var Cloud = require('ti.cloud');
 	Cloud.debug = true; // optional; if you add this line, set it to false for production
 	
-	// config
-	Titanium.Facebook.appid = '226354784164084';
 
 	//determine platform and form factor and render approproate components
 	var osname = Ti.Platform.osname, version = Ti.Platform.version, height = Ti.Platform.displayCaps.platformHeight, width = Ti.Platform.displayCaps.platformWidth;
@@ -38,7 +36,8 @@ if (Ti.version < 1.8) {
 		Window = require('ui/handheld/ApplicationWindow');
 	}
 
-	Titanium.Facebook.appid = Titanium.App.Properties.getString('facebook_appid');
+	// config
+	Titanium.Facebook.appid = '226354784164084';
 	Titanium.Facebook.permissions = ['publish_stream', 'read_friendlists', 'email'];
 	Titanium.Facebook.forceDialogAuth = false;
 

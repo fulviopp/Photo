@@ -215,43 +215,77 @@ function saveDuel(theme, p_id, newWin) {
 	Cloud.debug = true;
 
 	var currentUserId = Ti.App.Properties.getString('currentUserId');
+	
+	var needCreate = true;
 
-	// TODO: tenta encontrar duelo em aberto com o mesmo tema
-	Ti.API.log("Aqui");
-
-	// TODO: Verifica se, realmente, ele ficou gravado como o duelista (problema de operação não atomica)
-
-	//
-	// Grava um novo duelo
-	//
-	// TODO: Precisa mesmo essa estrutura ACL ou pode ter uma ACL única (ou única por usuário)?
-	Cloud.ACLs.create({
-		name : 'd_'+p_id,
-		public_read : true,
-		public_write : true,
-		writer_ids: currentUserId
-	}, function(e) {
-		if (e.success) {
-			var a_id = e.acls[0].id;
-			Ti.API.log("acl_id: " + a_id);
-			Cloud.Objects.create({
-				classname: 'duels',
-				acl_id: a_id, 
-				fields: {
-					theme: theme,
-					"[ACS_Photo]photo1_id" : p_id,
-					"[ACS_Photo]photos_ids" : [p_id]
+	Cloud.Objects.query({
+			classname : 'duels',
+			page : 1,
+			per_page : 10,
+			//where : {"$and": [ {"user_id":{"$ne":currentUserId}}, {"theme": theme}, {"[ACS_Photo]photo2_id": {"$exists" : false} } ] }
+			where : { "user_id":{"$ne":currentUserId} , "theme": theme, "[ACS_Photo]photo2_id": {"$exists" : false} }
+		}, function(e) {
+			Ti.API.log('testando...');
+			Ti.API.log(e);
+			var d_id = e.duels[0].id;
+			Ti.API.log('d_id: ' + d_id);
+			Cloud.KeyValues.increment({
+				name: 'd_' + d_id,
+				value: 1
+			}, function(e) {
+				Ti.API.log('criou?');
+				Ti.API.log(e);
+				var my_stamp = e.keyvalues[0].value;
+				if (e.keyvalues[0].value > 1) {
+					Ti.API.log('problema de concorrencia. criar novo duelo.');
+				} else {
+					// posso pegar aquele duelo
+					needCreate = false;
+					Cloud.Objects.update({
+						classname : 'duels',
+						id: d_id,
+						fields: {
+							"[ACS_Photo]photo2_id" : p_id,
+							"[ACS_Photo]user2_id": currentUserId							
+						}
+					}, function(e) {});							
 				}
-			}, function (e) {
-				//Ti.API.log(e);
-				Ti.App.fireEvent("app:newduel",{})
-				alert("Novo duelo criado! Agora é só esperar um desafiante...");
 			});
-		} else {
-			alert("Erro ao gravar duelo: " + e.error);
-		}
-	});
-	Ti.API.log("??");
+		});
+
+	if (false) {
+		//
+		// Grava um novo duelo
+		//
+		// TODO: Precisa mesmo essa estrutura ACL ou pode ter uma ACL única (ou única por usuário)?
+		Cloud.ACLs.create({
+			name : 'd_'+p_id,
+			public_read : true,
+			public_write : true,
+			writer_ids: currentUserId
+		}, function(e) {
+			if (e.success) {
+				var a_id = e.acls[0].id;
+				Ti.API.log("acl_id: " + a_id);
+				Cloud.Objects.create({
+					classname: 'duels',
+					acl_id: a_id, 
+					fields: {
+						theme: theme,
+						"[ACS_Photo]photo1_id" : p_id,
+					}
+				}, function (e) {
+					//Ti.API.log(e);
+					Ti.App.fireEvent("app:newduel",{})
+					alert("Novo duelo criado! Agora é só esperar um desafiante...");
+				});
+			} else {
+				alert("Erro ao gravar duelo: " + e.error);
+			}
+		});
+		Ti.API.log("??");		
+	}
+
 }
 
 module.exports = NewDuelWindow;

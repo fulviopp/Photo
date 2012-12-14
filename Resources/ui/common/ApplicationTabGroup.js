@@ -10,7 +10,7 @@ function ApplicationTabGroup(Window) {
 	var myDuelWindow = new DuelWindow(L('DUELO'),true);	
 	var tab1 = Ti.UI.createTab({
 		title: L('my_duel'),
-		icon: '/images/KS_nav_ui.png',
+		icon: '/images/nav_duel.png',
 		window: myDuelWindow
 	});
 	myDuelWindow.containingTab = tab1;
@@ -18,21 +18,21 @@ function ApplicationTabGroup(Window) {
 	var otDuelWindow = new DuelWindow(L('DUELO'),false);	
 	var tab2 = Ti.UI.createTab({
 		title: L('ot_duel'),
-		icon: '/images/KS_nav_ui.png',
+		icon: '/images/nav_ot_duel.png',
 		window: otDuelWindow
 	});
 	otDuelWindow.containingTab = tab2;	
 		
 	var tab3 = Ti.UI.createTab({
 		title: L('account'),
-		icon: '/images/KS_nav_ui.png',
+		icon: '/images/nav_user.png',
 		window: win3
 	});
 	win3.containingTab = tab3;
 	
 	var tab4 = Ti.UI.createTab({
 		title: L('ranking'),
-		icon: '/images/KS_nav_views.png',
+		icon: '/images/nav_rank.png',
 		window: win4
 	});
 	win4.containingTab = tab4;

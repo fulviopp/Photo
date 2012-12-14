@@ -2,7 +2,7 @@
 <resources>
 	<string name="my_duel">Meus Duelos</string>	
 	<string name="ot_duel">Outros Duelos</string>
-	<string name="account">Conta</string>
+	<string name="account">Meus Dados</string>
 	<string name="ranking">Ranking</string>
 	<string name="more">Carregar anteriores</string>
 	<string name="new_duel">Novo Duelo</string>

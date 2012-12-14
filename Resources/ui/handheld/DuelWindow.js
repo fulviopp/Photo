@@ -1,4 +1,6 @@
-function DuelWindow(title,showMine) {
+var navActInd = Titanium.UI.createActivityIndicator();
+
+function DuelWindow(title, showMine) {
 	var self = Ti.UI.createWindow({
 		backgroundColor : 'white',
 		barColor : '#101010',
@@ -13,6 +15,8 @@ function DuelWindow(title,showMine) {
 	// backgroundColor:'#000'
 	// });
 	// self.setLeftNavButton(bb1);
+	
+	self.setLeftNavButton(navActInd);
 
 	var newDuelButton = Titanium.UI.createButtonBar({
 		labels : [L('new_duel')],
@@ -47,67 +51,71 @@ function DuelWindow(title,showMine) {
 	});
 
 	self.add(tableview);
-	
-	getData(showMine,1,tableview, data); // Obtém dados
-	
+
+	getData(showMine, 1, tableview, data);
+	// Obtém dados
+
 	// Atualiza tabela quando um novo evento é criado
-	Ti.App.addEventListener("app:newduel",function(e) {
-		getData(showMine,1,tableview,data);
+	Ti.App.addEventListener("app:newduel", function(e) {
+		getData(showMine, 1, tableview, data);
 		Ti.API.info("ATUALIZANDO TABELA COM NOVO DUELO");
 	});
-	
+
 	// tableview.addEventListener('scroll', function(e) {
-		// Ti.API.log('tab scroll');
-		// Ti.API.log(e);
+	// Ti.API.log('tab scroll');
+	// Ti.API.log(e);
 	// });
 
 	var lastPage = 1;
 	tableview.addEventListener('scrollEnd', function(e) {
-		Ti.API.log('tab scrollEnd');
-		Ti.API.log(e);
-//		if ((e.contentOffset.y + e.size.height) > (e.contentSize.height - 10)) {
-		var tmpPage = Math.round( e.contentSize.height  / (e.contentOffset.y + e.size.height + 50) ) + 1;
-		if ( tmpPage > lastPage) { 
+//		Ti.API.log('tab scrollEnd');
+//		Ti.API.log(e);
+		//		if ((e.contentOffset.y + e.size.height) > (e.contentSize.height - 10)) {
+		var tmpPage = Math.round(e.contentSize.height / (e.contentOffset.y + e.size.height + 50)) + 1;
+		if (tmpPage > lastPage) {
 			lastPage = tmpPage;
-			Ti.API.log('Precisa ler mais página... ' + lastPage);			
-			getData(showMine,lastPage,tableview,tableview.data);
-		}		
+			Ti.API.log('Precisa ler mais página... ' + lastPage);
+			getData(showMine, lastPage, tableview, tableview.data);
+		}
 	});
-		
+
 	return self;
 };
 
 //
 // Obtem dados dos duelos
 //
-function getData(showMine,page,tableview, data) {
+function getData(showMine, page, tableview, data) {
 	var Cloud = require('ti.cloud');
 	Cloud.debug = true;
-	
-	if (page==1) {
+
+	if (page == 1) {
 		data = [];
 	}
 	
+	navActInd.show();
 	var currentUserId = Ti.App.Properties.getString('currentUserId');
 
 	var where_cl;
 	if (showMine) {
-		where_cl = '{"user_id":{"$in":["'+currentUserId+'"]}}';
+		where_cl = '{"user_id":{"$in":["' + currentUserId + '"]}}';
+		//where_cl = '{ "$or": [ { "user_id":"' + currentUserId + '"} , {"id" : 1} ] }';
 	} else {
-		where_cl = '{"user_id":{"$nin":["'+currentUserId+'"]}}';
+		where_cl = '{"user_id":{"$nin":["' + currentUserId + '"]}}';
 	}
 
 	Cloud.Objects.query({
 		classname : 'duels',
 		page : page,
 		per_page : 2,
-		where : where_cl
+		//where : '{"$or":[{"user_id":"' + currentUserId + '"}]}'
+		where: where_cl	
 	}, function(e) {
-		//Ti.API.log(e);
+		Ti.API.log(e);
 		Ti.API.log('Iniciando');
 		for (var c = 0; c < e.duels.length; c++) {
 			duel = e.duels[c];
-						
+
 			var row = Ti.UI.createTableViewRow();
 
 			var label = Ti.UI.createLabel({
@@ -123,38 +131,53 @@ function getData(showMine,page,tableview, data) {
 				}
 			});
 			// if (Titanium.Platform.name == 'android') {
-				// label.top = 10;
+			// label.top = 10;
 			// }
 			row.add(label);
-			
+
 			var imgURL = duel["[ACS_Photo]photo1_id"][0].urls.duel;
-			
+
 			Ti.API.log(imgURL);
 			var img = Ti.UI.createImageView({
 				top : 35,
-				left : 10,
-				image: imgURL,
+				left : 7,
+				image : imgURL,
 			});
 			// if (Titanium.Platform.name == 'android') {
-				// label.top = 10;
+			// label.top = 10;
 			// }
 			row.add(img);
-			
+
+			if (duel.hasOwnProperty('[ACS_Photo]photo2_id')) {
+				var imgURL2 = duel["[ACS_Photo]photo2_id"][0].urls.duel;
+	
+				Ti.API.log(imgURL2);
+				var img2 = Ti.UI.createImageView({
+					top : 35,
+					left : 163,
+					image : imgURL2,
+				});
+				// if (Titanium.Platform.name == 'android') {
+				// label.top = 10;
+				// }
+				row.add(img2);
+			}
+
 			label.addEventListener('click', function(e) {
 				Ti.API.info("clicked on label " + e.source);
 			});
 
 			data.push(row);
-			Ti.API.log("linha: " + c);
+			Ti.API.log("atualizando tabela...");
+
 		}
 		tableview.data = data;
-		Ti.API.log("atualizando tabela com:");
-		Ti.API.log(JSON.stringify(tableview.data));
-		tableview.scrollToIndex(tableview.data[0].rows.length);
-	});	
+		if (page>1) {
+			tableview.scrollToIndex((page*2)-2, { animated : true, position : Ti.UI.iPhone.TableViewScrollPosition.BOTTOM });	
+		}
+		navActInd.hide();
+	});
 }
-
-
 
 module.exports = DuelWindow;
 
