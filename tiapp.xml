@@ -17,13 +17,13 @@
     </deployment-targets>
     <sdk-version>2.1.4.GA</sdk-version>
     <id>com.photodueler</id>
-    <name>Photo</name>
+    <name>PhotoDueler</name>
     <version>1.0</version>
     <publisher>Fulvio</publisher>
     <url>http://</url>
     <description>not specified</description>
     <copyright>2012 by Fulvio</copyright>
-    <icon>Icon.png</icon>
+    <icon>Icon2.png</icon>
     <persistent-wifi>false</persistent-wifi>
     <prerendered-icon>false</prerendered-icon>
     <statusbar-style>default</statusbar-style>
