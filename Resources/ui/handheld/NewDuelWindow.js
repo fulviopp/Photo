@@ -1,3 +1,5 @@
+var navActInd = Titanium.UI.createActivityIndicator();
+
 //
 // Janela de novo duelo
 //
@@ -5,14 +7,39 @@ function NewDuelWindow(title) {
 	var newWin = Ti.UI.createWindow({
 		title : title,
 		backButtonTitle : L('back'),
-		backgroundColor : 'white',
-		barColor : '#101010'
+		barColor : '#101010',
+		backgroundImage : '/images/bk_texture.png',
+		backgroundRepeat : true
 	});
+
+	var linearGradient = Ti.UI.createView({
+		backgroundGradient : {
+			type : 'linear',
+			startPoint : {
+				x : '50%',
+				y : '0%'
+			},
+			endPoint : {
+				x : '50%',
+				y : '100%'
+			},
+			colors : [{
+				color : '#DDD',
+				offset : 0.5
+			}, {
+				color : '#AAA',
+				offset : 0.9
+			}],
+		},
+		opacity : 0.97
+	});
+	newWin.add(linearGradient);
 
 	var label = Ti.UI.createLabel({
 		text : L('choose_theme'),
 		font : {
-			fontSize : 18
+			fontSize : 17,
+			fontFamily : "STHeitiTC-Light"
 		},
 		height : 'auto',
 		top : 10,
@@ -20,49 +47,52 @@ function NewDuelWindow(title) {
 	});
 	newWin.add(label);
 
+	newWin.setRightNavButton(navActInd);
+
 	var theme = null;
 
 	var butT1 = Titanium.UI.createButton({
-		title : 'Lugares',
-		color : '#888',
-		height : 40,
-		width : 125,
+		theme : 'Lugares',
+		height : 62,
+		width : 55,
 		top : 40,
 		left : 30,
-		id : 't1'
+		id : 't1',
+		backgroundImage : '/images/but_th_lugares.png',
 	});
 	newWin.add(butT1);
 
 	var butT2 = Titanium.UI.createButton({
-		title : 'Pessoas',
-		color : '#888',
-		height : 40,
-		width : 125,
+		theme : 'Pessoas',
+		height : 62,
+		width : 55,
 		top : 40,
-		right : 30,
-		id : 't2'
+		left : 105,
+		id : 't2',
+		backgroundImage : '/images/but_th_pessoas.png',
 	});
 	newWin.add(butT2);
 
 	var butT3 = Titanium.UI.createButton({
-		title : 'Animais',
+		theme : 'Animais',
 		color : '#888',
-		height : 40,
-		width : 125,
-		top : 90,
-		left : 30,
-		id : 't3'
+		height : 62,
+		width : 55,
+		top : 40,
+		right : 90,
+		id : 't3',
+		backgroundImage : '/images/but_th_animais.png',
 	});
 	newWin.add(butT3);
 
 	var butT4 = Titanium.UI.createButton({
-		title : 'Flores',
-		color : '#888',
-		height : 40,
-		width : 125,
-		top : 90,
+		theme : 'Flores',
+		height : 62,
+		width : 55,
+		top : 40,
 		right : 30,
-		id : 't4'
+		id : 't4',
+		backgroundImage : '/images/but_th_flores.png',
 	});
 	newWin.add(butT4);
 
@@ -73,12 +103,12 @@ function NewDuelWindow(title) {
 
 	function chooseTheme(e) {
 		var button = e.source;
-		butT1.color = '#888';
-		butT2.color = '#888';
-		butT3.color = '#888';
-		butT4.color = '#888';
-		button.color = '#FFA03C';
-		theme = button.title;
+		butT1.backgroundImage = butT1.backgroundImage.replace('_clkd.png', '.png');
+		butT2.backgroundImage = butT2.backgroundImage.replace('_clkd.png', '.png');
+		butT3.backgroundImage = butT3.backgroundImage.replace('_clkd.png', '.png');
+		butT4.backgroundImage = butT4.backgroundImage.replace('_clkd.png', '.png');
+		button.backgroundImage = button.backgroundImage.replace('.png', '_clkd.png');
+		theme = button.theme;
 	}
 
 	//
@@ -105,7 +135,11 @@ function NewDuelWindow(title) {
 		title : L('get_photo'),
 		height : 40,
 		width : 260,
-		top : 160,
+		top : 140,
+		font : {
+			fontSize : 16,
+			fontFamily : "STHeitiTC-Medium"
+		},
 	});
 	newWin.add(butGallery);
 
@@ -137,22 +171,20 @@ function NewDuelWindow(title) {
 				}
 
 				Titanium.API.info('PHOTO GALLERY SUCCESS cropRect.x ' + cropRect.x + ' cropRect.y ' + cropRect.y + ' cropRect.height ' + cropRect.height + ' cropRect.width ' + cropRect.width);
-				
-				
-			// var ratio = event.media.width / event.media.height;
-            // if (ratio < 0.8 || ratio > 1.2) {
-                // var dialog = Ti.UI.createAlertDialog({
-                    // message : L('MAYBEZOOM'),
-                    // ok : 'OK',
-                    // title : 'Wrong Format'
-                // }).show();
-                // Ti.Media.hideCamera();
-            // } else {
-                // setImage(event.media);
-                // Ti.Media.hideCamera();
-            // }	
-            // VER: http://developer.appcelerator.com/question/144808/square-cropping-of-camera-photos			
-				
+
+				// var ratio = event.media.width / event.media.height;
+				// if (ratio < 0.8 || ratio > 1.2) {
+				// var dialog = Ti.UI.createAlertDialog({
+				// message : L('MAYBEZOOM'),
+				// ok : 'OK',
+				// title : 'Wrong Format'
+				// }).show();
+				// Ti.Media.hideCamera();
+				// } else {
+				// setImage(event.media);
+				// Ti.Media.hideCamera();
+				// }
+				// VER: http://developer.appcelerator.com/question/144808/square-cropping-of-camera-photos
 
 			},
 			cancel : function() {
@@ -174,7 +206,11 @@ function NewDuelWindow(title) {
 		title : L('start_duel'),
 		height : 40,
 		width : 260,
-		top : 230,
+		top : 220,
+		font : {
+			fontSize : 16,
+			fontFamily : "STHeitiTC-Medium"
+		},
 	});
 	newWin.add(butStartDuel);
 
@@ -187,15 +223,21 @@ function NewDuelWindow(title) {
 		} else if (!duelPhoto) {
 			alert(L('warning_choose_photo'));
 		} else {
+			navActInd.show();
+			butGallery.setEnabled(false);
+			butStartDuel.setEnabled(false);
+
 			Cloud.Photos.create({
 				photo : duelPhoto,
-				'photo_sizes[duel]': '150x150#',
-				'photo_sync_sizes[]': 'duel'
+				'photo_sizes[duel]' : '150x150#',
+				'photo_sync_sizes[]' : 'duel'
 			}, function(e) {
 				if (e.success) {
 					var p_id = e.photos[0].id;
-					saveDuel(theme, p_id, duelPhoto, newWin);
-					newWin.close();					
+					var duelURL = e.photos[0].urls.duel;
+					saveDuel(theme, p_id, duelURL);
+					navActInd.hide();
+					newWin.close();
 				} else {
 					alert("Erro ao gravar foto: " + e.error);
 				}
@@ -204,88 +246,124 @@ function NewDuelWindow(title) {
 		}
 	});
 
+	newWin.addEventListener('focus', function() {
+		navActInd.hide();
+		butGallery.setEnabled(true);
+		butStartDuel.setEnabled(true);
+	});
+
 	return newWin;
 }
 
 //
 // Grava um novo duelo ou coloca esse como desafiante em duelo já existente
 //
-function saveDuel(theme, p_id, newWin) {
+function saveDuel(theme, p_id, duelURL) {
 	var Cloud = require('ti.cloud');
 	Cloud.debug = true;
 
 	var currentUserId = Ti.App.Properties.getString('currentUserId');
-	
-	var needCreate = true;
 
 	Cloud.Objects.query({
-			classname : 'duels',
-			page : 1,
-			per_page : 10,
-			//where : {"$and": [ {"user_id":{"$ne":currentUserId}}, {"theme": theme}, {"[ACS_Photo]photo2_id": {"$exists" : false} } ] }
-			where : { "user_id":{"$ne":currentUserId} , "theme": theme, "[ACS_Photo]photo2_id": {"$exists" : false} }
-		}, function(e) {
-			Ti.API.log('testando...');
-			Ti.API.log(e);
+		classname : 'duels',
+		page : 1,
+		per_page : 10,
+		where : {
+			"user_id" : {
+				"$ne" : currentUserId
+			},
+			"theme" : theme,
+			"[ACS_Photo]photo2_id" : {
+				"$exists" : false
+			}
+		}
+	}, function(e) {
+		Ti.API.log('testando...');
+		Ti.API.log(e);
+		if (e.duels.length > 0) {
 			var d_id = e.duels[0].id;
 			Ti.API.log('d_id: ' + d_id);
 			Cloud.KeyValues.increment({
-				name: 'd_' + d_id,
-				value: 1
+				name : 'd_' + d_id,
+				value : 1
 			}, function(e) {
 				Ti.API.log('criou?');
 				Ti.API.log(e);
 				var my_stamp = e.keyvalues[0].value;
 				if (e.keyvalues[0].value > 1) {
 					Ti.API.log('problema de concorrencia. criar novo duelo.');
+					createDuel();
 				} else {
 					// posso pegar aquele duelo
-					needCreate = false;
 					Cloud.Objects.update({
 						classname : 'duels',
-						id: d_id,
-						fields: {
-							"[ACS_Photo]photo2_id" : p_id,
-							"[ACS_Photo]user2_id": currentUserId							
+						id : d_id,
+						fields : {
+							"[ACS_Photo]photo2_id" : p_id
 						}
-					}, function(e) {});							
+					}, function(e) {
+						//Ti.API.log(e);
+						registerDueler(d_id);
+						Ti.App.fireEvent("app:newduel", {
+							theme : theme,
+							duelURL : duelURL,
+							newDuelId : d_id
+						})
+						alert("Novo duelo começando. Boa sorte !!");
+					});
 				}
 			});
-		});
+		} else {
+			createDuel();
+		}
+	});
 
-	if (false) {
-		//
-		// Grava um novo duelo
-		//
-		// TODO: Precisa mesmo essa estrutura ACL ou pode ter uma ACL única (ou única por usuário)?
-		Cloud.ACLs.create({
-			name : 'd_'+p_id,
-			public_read : true,
-			public_write : true,
-			writer_ids: currentUserId
+	//
+	// Grava um novo duelo
+	//
+	function createDuel() {
+		Cloud.Objects.create({
+			classname : 'duels',
+			acl_name : 'duel',
+			fields : {
+				theme : theme,
+				"[ACS_Photo]photo1_id" : p_id,
+				points : 100,
+				votes_to_win : 3
+			}
 		}, function(e) {
-			if (e.success) {
-				var a_id = e.acls[0].id;
-				Ti.API.log("acl_id: " + a_id);
-				Cloud.Objects.create({
-					classname: 'duels',
-					acl_id: a_id, 
-					fields: {
-						theme: theme,
-						"[ACS_Photo]photo1_id" : p_id,
-					}
-				}, function (e) {
-					//Ti.API.log(e);
-					Ti.App.fireEvent("app:newduel",{})
-					alert("Novo duelo criado! Agora é só esperar um desafiante...");
+			//Ti.API.log(e);
+			d_id = e.duels[0].id;
+			registerDueler(d_id);
+			Ti.App.fireEvent("app:newduel", {
+				theme : theme,
+				duelURL : duelURL,
+				newDuelId : d_id
+			})
+			alert("Novo duelo criado! Agora é só esperar um desafiante...");
+		});
+		Ti.API.log("??");
+	}
+
+	// Associa usuário a um duelo
+	function registerDueler(d_id) {
+		key = 'myduels_' + currentUserId;
+		value = d_id + ',';
+		Ti.API.log('key: ' + key);
+		Cloud.KeyValues.append({
+			name : key,
+			value : value
+		}, function(e) {
+			if (e.error && e.code == 400) {
+				Cloud.KeyValues.set({
+					name : key,
+					value : value
+				}, function(e) {
 				});
-			} else {
-				alert("Erro ao gravar duelo: " + e.error);
 			}
 		});
-		Ti.API.log("??");		
 	}
 
 }
 
-module.exports = NewDuelWindow;
+module.exports = NewDuelWindow; 

@@ -10,9 +10,12 @@
 	<string name="back">Voltar</string>
 	<string name="login_title">Login</string>
 	<string name="register">Cadastrando no PhotoDueler!</string>	
-	<string name="choose_theme">Escolha o tema</string>
+	<string name="choose_theme">Tema do duelo</string>
+	<string name="choose_pict">A foto</string>
 	<string name="get_photo">Escolher uma foto</string>
 	<string name="start_duel">Começar novo duelo!</string>
 	<string name="warning_choose_theme">Escolha o tema do duelo</string>
 	<string name="warning_choose_photo">Escolha uma foto</string>
+	<string name="votes">VOTOS</string>
+	<string name="one_vote">1 VOTO</string>
 </resources>
